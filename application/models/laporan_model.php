@@ -36,5 +36,16 @@ class Laporan_model extends CI_Model {
 			 order by userid asc, tgl desc;
 			");
 	}
+	public function printBelumPunyaFP($data=''){
+		$this->db->select('userinfo.badgenumber NIK, userinfo.name nama, departments.DeptName departemen');
+		$this->db->join('template','userinfo.userid=template.userid','left');
+		$this->db->join('departments','userinfo.defaultdeptid=departments.DeptID','left');
+		if($data['departemen']!=''){
+			$this->db->where('userinfo.defaultdeptid',$data['departemen']);
+		}
+		$this->db->where('template.templateid is NULL');
+		$this->db->order_by('userinfo.defaultdeptid asc');
+		return $this->db->get('userinfo');
+	}
 }
 	

@@ -42,6 +42,31 @@ class Laporan extends CI_Controller {
 			header('location:'.base_url().'index.php/laporan');	
 		}
 	}
+	public function lapBelumPunyaFP()
+	{
+		if($this->session->userdata('logged_in')!="")
+		{
+			$d['judul'] ="Laporan Karyawan Yang Belum Memiliki Daftar Sidik Jari";
+			$d['departemen'] =$this->laporan_model->getListDepartemen();
+			$d['content']= $this->load->view('laporan/formBelumPunyaFP',$d,true);
+			$this->load->view('home',$d);
+		}
+		else
+		{
+			header('location:'.base_url().'index.php/login');
+		}
+	}
+	public function printBelumPunyaFP(){
+		if ($_POST) {
+			$post = $_POST;
+			$data['data'] = $this->laporan_model->printBelumPunyaFP($post)->result_array();
+			return $this->load->view('laporan/printBelumPunyaFP',$data);	
+			
+		}
+		else{
+			header('location:'.base_url().'index.php/laporan');	
+		}
+	}
 	
 }
 
